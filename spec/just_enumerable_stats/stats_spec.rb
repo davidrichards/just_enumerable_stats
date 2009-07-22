@@ -1,15 +1,33 @@
-require File.dirname(__FILE__) + '/spec_helper'
+require File.join(File.dirname(__FILE__), "/../spec_helper")
 
-describe "JustEnumerableStats" do
+require 'just_enumerable_stats/stats'
+class MyDataContainer
+  include Enumerable
+  include JustEnumerableStats::Stats
   
-  before do 
-    @a = [1,2,3]
-    @b = [8,4,2]
+  def initialize(*values)
+    @data = values
+  end
+  
+  def method_missing(sym, *args, &block)
+    @data.send(sym, *args, &block)
+  end
+  
+  def to_a
+    @data
+  end
+  
+end
+
+describe JustEnumerableStats::Stats do
+  before do
+    @a = MyDataContainer.new(1,2,3)
+    @b = MyDataContainer.new(8,4,2)
     @doubler = lambda{|e| e * 2}
     @inverser = lambda{|e| 1/e.to_f}
     @inverse_matcher = lambda{|a, b| 1/a <=> 1/b}
   end
-  
+
   it "should be able to generate a random number between two integers" do
     val = (1..100).map {rand_between(1,10)}
     (val.min >= 1).should be_true
@@ -28,14 +46,6 @@ describe "JustEnumerableStats" do
     (val.min >= 1).should be_true
     (val.max <= 10).should be_true
     val.all? {|v| v.should be_is_a(Float)}
-  end
-  
-  it "should have an original max" do
-    @a.original_max.should eql(3)
-  end
-  
-  it "should have an original min" do
-    @a.original_min.should eql(1)
   end
   
   it "should have a max" do
@@ -57,7 +67,7 @@ describe "JustEnumerableStats" do
   end
   
   it "should find the first index value with max_index, in case there are duplicates" do
-    [1,2,3,3].max_index.should eql(2)
+    MyDataContainer.new(1,2,3,3).max_index.should eql(2)
   end
   
   it "should use a block to find the max index" do
@@ -89,7 +99,7 @@ describe "JustEnumerableStats" do
   end
   
   it "should find the first index value with min_index, in case there are duplicates" do
-    [1,1,2,3].min_index.should eql(0)
+    MyDataContainer.new(1,1,2,3).min_index.should eql(0)
   end
   
   it "should use a block to find the min index" do
@@ -104,12 +114,12 @@ describe "JustEnumerableStats" do
   
   it "should be able to sum a list" do
     @a.sum.should eql(6)
-    [1, 2, 3.0].sum.should eql(6.0)
+    MyDataContainer.new(1, 2, 3.0).sum.should eql(6.0)
   end
   
   it "should offer sum with a precision of 1.0e-15" do
-    [0.1, 0.2, 0.3].sum.should be_close(0.6, 1.0e-15)
-    [0.1, 0.2, 0.3].sum.should_not be_close(0.6, 1.0e-16)
+    MyDataContainer.new(0.1, 0.2, 0.3).sum.should be_close(0.6, 1.0e-15)
+    MyDataContainer.new(0.1, 0.2, 0.3).sum.should_not be_close(0.6, 1.0e-16)
   end
   
   it "should be able to evaluate a sum with a block" do
@@ -125,14 +135,14 @@ describe "JustEnumerableStats" do
     @a.average.should eql(2)
     @a.mean.should eql(2)
     @a.avg.should eql(2)
-    [1, 2, 3.0].average.should eql(2.0)
+    MyDataContainer.new(1, 2, 3.0).average.should eql(2.0)
   end
   
   it "should be able to calculate average with a block" do
     @a.average(&@doubler).should eql(4)
     @a.mean(&@doubler).should eql(4)
     @a.avg(&@doubler).should eql(4)
-    [1, 2, 3.0].average(&@doubler).should eql(4.0)
+    MyDataContainer.new(1, 2, 3.0).average(&@doubler).should eql(4.0)
   end
   
   it "should be able to calculate average with a default block" do
@@ -140,7 +150,7 @@ describe "JustEnumerableStats" do
     @a.average.should eql(4)
     @a.mean.should eql(4)
     @a.avg.should eql(4)
-    b = [1, 2, 3.0]
+    b = MyDataContainer.new(1, 2, 3.0)
     b.default_block = @doubler
     b.average.should eql(4.0)
   end
@@ -179,8 +189,8 @@ describe "JustEnumerableStats" do
   
   it "should be able to calculate the median value" do
     @a.median.should eql(2)
-    [1,4,3,2,5].median.should eql(3)
-    [1,9,2,8].median.should eql(5.0)
+    MyDataContainer.new(1,4,3,2,5).median.should eql(3)
+    MyDataContainer.new(1,9,2,8).median.should eql(5.0)
   end
   
   it "should be able to get a max and min range from the list" do
@@ -425,16 +435,16 @@ describe "JustEnumerableStats" do
   end
   
   it "should be able to transpose a list of lists (not dependent on Array#transpose)" do
-    a = [1,2,6.0]
-    b = [2,6.0,1]
-    c = [6.0,1,2]
+    a = MyDataContainer.new(1,2,6.0)
+    b = MyDataContainer.new(2,6.0,1)
+    c = MyDataContainer.new(6.0,1,2)
     val = a.yield_transpose(b, c)
     val.should eql( [[1, 2, 6.0], [2, 6.0, 1], [6.0, 1, 2]])
   end
   
   it "should be able to get the correlation between two lists" do
-    @a.correlation([2,3,5]).should be_close(0.981, 0.001)
-    @a.cor([2,3,5]).should be_close(0.981, 0.001)
+    @a.correlation(MyDataContainer.new(2,3,5)).should be_close(0.981, 0.001)
+    @a.cor(MyDataContainer.new(2,3,5)).should be_close(0.981, 0.001)
   end
 
   it "should be able to return the max of lists" do

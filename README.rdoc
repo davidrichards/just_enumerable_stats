@@ -1,0 +1,147 @@
+== Just Enumerable Stats
+
+I had some tricky stuff in Statisticus and Sirb that were useful, but I ended up using someone else's library for plain-old calculations on a single enumerable.  What a shame, I thought.  So I extracted things out and made a simpler library that I'd use for my simpler needs.
+
+I also included a FixedRange class for traversing floating point ranges a little more easily and a nearly-exact copy of the whole library in its own module for containing these methods in your own container.  See the Known Issues section below and the specs for that module.
+
+==Usage
+
+Would I release a gem without an IRB application included?  Probably not.  This gem has one, and it's called jes:
+
+  jes 
+  Loading Just Enumerable Stats version: 0.0.1
+
+Looking at the library through jes, you can see that we have all the usual goodies:
+
+  >> [1,2,3].mean
+  => 2
+  >> [1,2,3].std
+  => 1.0
+  >> [1,2,3].cor [2,3,5]
+  => 0.981980506061966
+
+The list of methods are:
+
+* average
+* avg (average)
+* cartesian_product
+* compliment
+* cor (correlation)
+* correlation
+* cp (cartesian_product)
+* cum_max (cumulative_max)
+* cum_min (cumulative_min)
+* cum_prod (cumulative_product)
+* cum_sum (cumulative_sum)
+* cumulative_max
+* cumulative_min
+* cumulative_product
+* cumulative_sum
+* default_block
+* default_block=
+* euclidian_distance
+* exclusive_not
+* intersect
+* max
+* max_index
+* max_of_lists
+* mean (average)
+* median
+* min
+* min_index
+* min_of_lists
+* new_sort
+* order
+* original_max
+* original_min
+* permutations (cartesian_product)
+* product
+* quantile
+* rand_in_range
+* range
+* range_as_range
+* range_class
+* range_class=
+* rank
+* sigma_pairs
+* standard_deviation
+* std (standard_deviation)
+* sum
+* tanimoto_correlation (tanimoto_pairs)
+* tanimoto_pairs
+* to_pairs
+* union
+* var (variance)
+* variance
+* yield_transpose
+
+One of the more interesting methods is yield_transpose:
+
+  [1,2,3].yield_transpose([5,5,5], [2,2,2]) { |e| e.product }
+  # => [10, 20, 30]
+
+The yield_transpose:
+
+* makes a list of lists (read matrix) out of the main object and one or more other lists
+* yields a block on the *columns* of the list
+
+In this case, it multiplies 1 * 5 * 2, 2 * 5 * 2, and 3 * 5 * 2 to get the final result.
+
+There are a lot of other interesting tools that do this (RNum, Matrix), but the ones I know about aren't as flexible as this simple implementation.
+
+Another interesting feature is the default block getter and setter.  Sometimes I need to filter, scale, or normalize a result. I can do that in the default block and still hold on to the original value  Ultimately, it's more expensive to do things this way (every computation has to also go through a filter), but it's a little simpler sometimes.  An example:
+
+  a = [1,2,3]
+  a.default_block = lambda {|e| e * 2}
+  a.sum
+  # => [2,4,6]
+  a.std
+  # => 2.0 instead of 1.0
+  
+==Installation
+
+sudo gem install davidrichards-just_enumerable_stats
+
+== Dependencies
+
+None
+
+== Known Issues
+
+* I don't like the quantile methods.  I found a different approach that I think is cleaner, that I should implement when I get the time.
+* This isn't really for any Enumerable.  It's only tested on Arrays, though I'm pretty sure a lot of my repositories and other custom Enumerables will work well with this.  Most importantly, a Hash will fall on its face here, so don't try it.  If you need labeled data, keep an eye out for Marginal, a gem I'm cleaning up that offers log-linear methods on cross tables.  That gem will use this gem, so whatever goodies I add here will be available there.
+* I imagine the scope of this gem may grow by about a third more methods.  It's not supposed to be an exhaustive list.  TeguGears was developed to build these kinds of methods and have them work nicely with other tools.  So, anything more than elementary statistics should become a TeguGears class.
+* I should probably rename the range methods.
+* I'm very aggressively polluting the Enumerable namespace.  In complex work environments, it wouldn't work if other libraries had as liberal a view on things as I do.  If this is a problem, you can do something like:
+
+  require 'just_enumerable_stats/stats'
+  class MyDataContainer
+    include Enumerable
+    include JustEnumerableStats::Stats
+  
+    def initialize(*values)
+      @data = values
+    end
+  
+    def method_missing(sym, *args, &block)
+      @data.send(sym, *args, &block)
+    end
+  
+    def to_a
+      @data
+    end
+  
+  end
+
+To use this new class, you'd convert your data lists like this:
+  a = [1,2,3]
+  m = MyDataContainer.new(*a)
+  
+Or just
+  m = MyDataContainer.new(1,2,3)
+  
+This approach works and passes the same tests as the main library though it promises to be awkward.
+
+==COPYRIGHT
+
+Copyright (c) 2009 David Richards. See LICENSE for details.

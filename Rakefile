@@ -4,10 +4,10 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "just_enumerable_stats"
-    s.summary = %Q{TODO}
+    s.summary = %Q{Basic statistics on Ruby enumerables}
     s.email = "davidlamontrichards@gmail.com"
     s.homepage = "http://github.com/davidrichards/just_enumerable_stats"
-    s.description = "TODO"
+    s.description = "Basic statistics on Ruby enumerables"
     s.authors = ["David Richards"]
   end
 rescue LoadError
