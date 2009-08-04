@@ -128,6 +128,14 @@ Once I started using this gem with my distribution table classes, I needed to ha
   => 2
   >> a.count_if {|e| e == 3}
   => 1
+  >> a.dichotomize(2, :small, :big)
+  => [:small, :big]
+  >> a.categories
+  => [:small, :big]
+  >> a.category_values[:small]
+  => [1, 2]
+  >> a.category_values[:big]  
+  => [3]
 
 OK, here we go:
 
@@ -139,6 +147,7 @@ OK, here we go:
 * set_range takes an arbitrary hash of lambdas and sets the categories to the keys of that hash.
 * The category_values calculated with a hash of lambdas makes a very flexible set interface for enumerables.  There is no rule that the categories setup this way have to be mutually exclusive or collectively exhaustive (MECE), so interesting data sets can be setup here.  However, MECE is generally a good guideline for most analysis.
 * count_if is just like a.select_all{|e| e < 3}.size, but a little more obvious.
+* dichotomize just splits the categories into two, with the first category less than or equal to the split value provided (2 in our case)
 
 ==Installation
 
