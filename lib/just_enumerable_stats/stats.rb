@@ -199,6 +199,28 @@ module JustEnumerableStats #:nodoc:
     end
     protected :iterate_midway
 
+    # Takes the range_class and returns its map.
+    # Example:
+    # require 'mathn'
+    # a = [1,2,3]
+    # a
+    # range_class = FixedRange, a.min, a.max, 1/4
+    # a.categories
+    # => [1, 5/4, 3/2, 7/4, 2, 9/4, 5/2, 11/4, 3]
+    # For non-numeric values, returns a unique set, 
+    # ordered if possible.
+    def categories
+      if self.is_numeric?
+        self.range_instance.map
+      else
+        self.uniq.sort rescue self.uniq
+      end
+    end
+
+    def is_numeric?
+      self.all? {|e| e.is_a?(Numeric)}
+    end
+
     # Just an array of [min, max] to comply with R uses of the work.  Use
     # range_as_range if you want a real Range. 
     def range(&block)
@@ -206,9 +228,13 @@ module JustEnumerableStats #:nodoc:
     end
 
     # Useful for setting a real range class (FixedRange).
-    def range_class=(klass)
+    def set_range_class(klass, *args)
       @range_class = klass
+      @range_class_args = args
+      self.range_class
     end
+
+    attr_reader :range_class_args
 
     # When creating a range, what class will it be?  Defaults to Range, but
     # other classes are sometimes useful. 
@@ -218,8 +244,13 @@ module JustEnumerableStats #:nodoc:
 
     # Actually instantiates the range, instead of producing a min and max array.
     def range_as_range(&block)
-      range_class.new(min(&block), max(&block))
+      if @range_class_args and not @range_class_args.empty?
+        self.range_class.new(*@range_class_args)
+      else
+        self.range_class.new(min(&block), max(&block))
+      end
     end
+    alias :range_instance :range_as_range
 
     # I don't pass the block to the sort, because a sort block needs to look
     # something like: {|x,y| x <=> y}.  To get around this, set the default 

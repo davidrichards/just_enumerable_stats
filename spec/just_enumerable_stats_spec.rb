@@ -197,12 +197,40 @@ describe "JustEnumerableStats" do
   end
 
   it "should have a getter and a setter on the range class" do
-    @a.range_class = Array
+    @a.set_range_class Array
     @a.range_class.should eql(Array)
   end
   
+  it "should be able to send extra arguments for the range class" do
+    @a.set_range_class FixedRange, 1, 3, 0.25
+    @a.range_as_range.should be_is_a(FixedRange)
+    @a.range_instance.should be_is_a(FixedRange)
+  end
+  
+  it "should use the range arguments when instantiating a range" do
+    @a.set_range_class FixedRange, 1, 3, 0.5
+    @a.range_instance.should be_is_a(FixedRange)
+    @a.range_instance.min.should eql(1)
+    @a.range_instance.max.should eql(3)
+    @a.range_instance.step_size.should eql(0.5)
+  end
+
   it "should be able to instantiate a range" do
     @a.range_as_range.should eql(Range.new(1, 3))
+  end
+  
+  it "should know its categories, based on its range" do
+    @a.categories.should eql([1,2,3])
+  end
+  
+  it "should know its categories with a different range class" do
+    @a.set_range_class FixedRange, 1, 3, 0.5
+    @a.categories.should eql([1.0, 1.5, 2.0, 2.5, 3.0])
+  end
+  
+  it "should know its categories from non-numeric values" do
+    a = [:this, :and, :that]
+    a.categories.should eql(a)
   end
   
   it "should be able to instantiate a range with a block" do
