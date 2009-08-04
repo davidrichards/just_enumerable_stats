@@ -1,3 +1,5 @@
+require 'rubygems'
+
 # Need the FixedRange
 $:.unshift File.dirname(__FILE__)
 require 'fixed_range'
