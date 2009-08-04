@@ -270,6 +270,14 @@ module Enumerable
   # The arguments needed to instantiate the custom-defined range class.
   attr_reader :range_class_args
 
+  # Splits the values in two, <= the value and > the value.
+  def dichotomize(split_value, first_label, second_label)
+    set_range({
+      first_label => lambda{|e| e <= split_value},
+      second_label => lambda{|e| e > split_value}
+    })
+  end
+  
   # Counts each element where the block evaluates to true
   # Example:
   # a = [1,2,3]

@@ -279,6 +279,13 @@ describe JustEnumerableStats::Stats do
     @a.count_if {|e| e == 2}.should eql(1)
   end
   
+  it "should be able to dichotomize a list" do
+    @a.dichotomize(2, :small, :big)
+    @a.categories.should eql([:small, :big])
+    @a.category_values[:small].should eql([1,2])
+    @a.category_values[:big].should eql([3])
+  end
+  
   it "should be able to instantiate a range" do
     @a.range_as_range.should eql(Range.new(1, 3))
   end
