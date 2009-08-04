@@ -2,6 +2,12 @@
 $:.unshift File.dirname(__FILE__)
 require 'fixed_range'
 
+begin
+  require 'facets/dictionary'
+rescue LoadError => e
+  # Do nothing
+end
+
 # Borrowed this from my own gem, sirb
 
 class Object
@@ -215,7 +221,9 @@ module Enumerable
   # For non-numeric values, returns a unique set, 
   # ordered if possible.
   def categories
-    if self.is_numeric?
+    if @categories
+      @categories
+    elsif self.is_numeric?
       self.range_instance.map
     else
       self.uniq.sort rescue self.uniq
@@ -239,7 +247,60 @@ module Enumerable
     self.range_class
   end
   
+  # Takes a hash of arrays for categories
+  # If Facets happens to be loaded on the computer, this keeps the order
+  # of the categories straight. 
+  def set_range(hash)
+    if defined?(Dictionary)
+      @range_hash = Dictionary.new
+      @range_hash.merge!(hash)
+      @categories = @range_hash.keys
+    else
+      @categories = hash.keys
+      @range_hash = hash
+    end
+    @categories
+  end
+  
+  # The hash of lambdas that are used to categorize the enumerable.
+  attr_reader :range_hash
+  
+  # The arguments needed to instantiate the custom-defined range class.
   attr_reader :range_class_args
+
+  # Counts each element where the block evaluates to true
+  # Example:
+  # a = [1,2,3]
+  # a.count_if {|e| e % 2 == 0}
+  def count_if(&block)
+    self.inject(0) do |s, e|
+      s += 1 if block.call(e)
+      s
+    end
+  end
+  
+  # Returns a Hash or Dictionary (if available) for each category with a
+  # value as the set of matching values as an array. 
+  # Because this is supposed to be lean (just enumerables), but this is an
+  # expensive call, I'm going to cache it and offer a parameter to reset
+  # the cache.  So, call category_values(true) if you need to reset the
+  # cache. 
+  def category_values(reset=false)
+    @category_values = nil if reset
+    return @category_values if @category_values
+    container = defined?(Dictionary) ? Dictionary.new : Hash.new
+    if self.range_hash
+      @category_values = self.categories.inject(container) do |cont, cat|
+        cont[cat] = self.find_all &self.range_hash[cat]
+        cont
+      end
+    else
+      @category_values = self.categories.inject(container) do |cont, cat|
+        cont[cat] = self.find_all {|e| e == cat}
+        cont
+      end
+    end
+  end
 
   # When creating a range, what class will it be?  Defaults to Range, but
   # other classes are sometimes useful. 

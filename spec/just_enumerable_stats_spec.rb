@@ -233,6 +233,42 @@ describe "JustEnumerableStats" do
     a.categories.should eql(a)
   end
   
+  it "should be able to set a range with a hash of lambdas" do
+    @a.set_range({
+      "<= 2" => lambda{ |e| e <= 2 },
+      "> 2" => lambda{ |e| e > 2 }
+    })
+    @a.categories.sort.should eql(["<= 2", "> 2"].sort)
+  end
+  
+  it "should be able to get a hash of category values" do
+    @a.set_range({
+      "<= 2" => lambda{ |e| e <= 2 },
+      "> 2" => lambda{ |e| e > 2 }
+    })
+    @a.category_values["<= 2"].should eql([1,2])
+    @a.category_values["> 2"].should eql([3])
+  end
+  
+  it "should be able to get category values with a regular range" do
+    @a.category_values[1].should eql([1])
+    @a.category_values[2].should eql([2])
+    @a.category_values[3].should eql([3])
+  end
+  
+  it "should be able to get category values with a custom range" do
+    @a.set_range_class(FixedRange, 1, 3, 0.5)
+    @a.category_values[1.0].should eql([1])
+    @a.category_values[1.5].should eql([])
+    @a.category_values[2.0].should eql([2])
+    @a.category_values[2.5].should eql([])
+    @a.category_values[3.0].should eql([3])
+  end
+    
+  it "should be able to count conditionally" do
+    @a.count_if {|e| e == 2}.should eql(1)
+  end
+  
   it "should be able to instantiate a range with a block" do
     @a.range_as_range(&@inverse_matcher).should eql(Range.new(3, 1))
   end
