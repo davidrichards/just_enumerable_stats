@@ -517,4 +517,16 @@ describe "JustEnumerableStats" do
     @a.min_of_lists(@b).should eql([1,2,2])
   end
   
+  it "should return the covariance of two lists" do
+    a = [1,2,3,4]
+    b = [3,3,4,3]
+    a.covariance(b).should eql(0.125)
+  end
+  
+  it "should be able to return the Pearson correlation" do
+    a = [1,2,3,4]
+    b = [3,3,4,3]
+    a.pearson_correlation(b).should be_close(0.193649167310371, 1.0e-15)
+  end
+  
 end

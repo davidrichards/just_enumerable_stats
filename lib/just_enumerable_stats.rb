@@ -601,4 +601,34 @@ module Enumerable
   def min_of_lists(*enums)
     yield_transpose(*enums) {|e| e.min}
   end
+  
+  # Returns the covariance of two lists.
+  def covariance(other)
+    self.to_f!
+    other.to_f!
+    n = [self.size, other.size].min
+    self_average = self.mean
+    other_average = other.mean
+    total_expected = self.sigma_pairs(other) {|a, b| (a - self_average) * (b - other_average)}
+    total_expected / n
+  end
+  
+  # The covariance / product of standard deviations
+  # http://en.wikipedia.org/wiki/Correlation
+  def pearson_correlation(other)
+    self.to_f!
+    other.to_f!
+    denominator = self.standard_deviation * other.standard_deviation
+    self.covariance(other) / denominator
+  end
+  
+  protected
+  
+    # Some calculations have to have at least floating point numbers.  This
+    # generates a cached version of the operation--only runs once per object. 
+    def to_f!
+      return true if @to_f
+      @to_f = self.map! {|e| e.to_f}
+    end
+  
 end
