@@ -622,13 +622,11 @@ module Enumerable
     self.covariance(other) / denominator
   end
   
-  protected
-  
-    # Some calculations have to have at least floating point numbers.  This
-    # generates a cached version of the operation--only runs once per object. 
-    def to_f!
-      return true if @to_f
-      @to_f = self.map! {|e| e.to_f}
-    end
+  # Some calculations have to have at least floating point numbers.  This
+  # generates a cached version of the operation--only runs once per object. 
+  def to_f!
+    return true if @to_f
+    @to_f = self.map! {|e| e.to_f}
+  end
   
 end

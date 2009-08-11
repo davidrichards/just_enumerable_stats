@@ -529,4 +529,8 @@ describe "JustEnumerableStats" do
     a.pearson_correlation(b).should be_close(0.193649167310371, 1.0e-15)
   end
   
+  it "should be able to force the list into floats" do
+    [1,2,3].to_f!.should eql([1.0, 2.0, 3.0])
+  end
+  
 end
