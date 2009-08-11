@@ -523,12 +523,6 @@ describe "JustEnumerableStats" do
     a.covariance(b).should eql(0.125)
   end
   
-  it "should be able to return the Pearson correlation" do
-    a = [1,2,3,4]
-    b = [3,3,4,3]
-    a.pearson_correlation(b).should be_close(0.193649167310371, 1.0e-15)
-  end
-  
   it "should be able to force the list into floats" do
     [1,2,3].to_f!.should eql([1.0, 2.0, 3.0])
   end
