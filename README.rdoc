@@ -23,55 +23,62 @@ Looking at the library through jes, you can see that we have all the usual goodi
 The list of methods are:
 
 * average
-* avg (average)
+* avg
 * cartesian_product
+* categories
+* category_values
 * compliment
-* cor (correlation)
+* cor
 * correlation
-* cp (cartesian_product)
-* cum_max (cumulative_max)
-* cum_min (cumulative_min)
-* cum_prod (cumulative_product)
-* cum_sum (cumulative_sum)
+* count_if
+* covariance
+* cum_max
+* cum_min
+* cum_prod
+* cum_sum
 * cumulative_max
 * cumulative_min
 * cumulative_product
 * cumulative_sum
 * default_block
 * default_block=
+* dichotomize
 * euclidian_distance
 * exclusive_not
 * intersect
+* is_numeric?
 * max
 * max_index
 * max_of_lists
-* mean (average)
+* mean
 * median
 * min
 * min_index
 * min_of_lists
 * new_sort
 * order
-* original_max
-* original_min
-* permutations (cartesian_product)
+* pearson_correlation
+* permutations
 * product
 * quantile
 * rand_in_range
 * range
 * range_as_range
 * range_class
-* range_class=
+* range_instance
 * rank
+* set_range
+* set_range_class
 * sigma_pairs
 * standard_deviation
-* std (standard_deviation)
+* std
 * sum
-* tanimoto_correlation (tanimoto_pairs)
+* tanimoto_correlation
 * tanimoto_pairs
+* to_f!
 * to_pairs
 * union
-* var (variance)
+* var
 * variance
 * yield_transpose
 
