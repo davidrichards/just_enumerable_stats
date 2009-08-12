@@ -149,49 +149,25 @@ OK, here we go:
 * count_if is just like a.select_all{|e| e < 3}.size, but a little more obvious.
 * dichotomize just splits the categories into two, with the first category less than or equal to the split value provided (2 in our case)
 
+==Obtrusiveness
+
+This gem won't override methods, but it puts a lot into the Enumerable namespace.  It's almost as abusive as ActiveSupport.  I'll be testing this in a Rails environment to make sure this plays nicely with ActiveSupport.  The issue there was that ActiveSupport also wanted to override sum on an enumerable.  If you are in an environment where jes isn't overriding methods, then you're going to have to use the _jes_ prefix for the calls.  So, @a._jes_sum will work, as will @a._jes_standard_deviation, @a._jes_covariance, etc.  I'm realizing that I always want to use this library in all of my new stuff, because it simplifies things so much.  So, this is going to be an ever-more important point.  
+
 ==Installation
 
 sudo gem install davidrichards-just_enumerable_stats
 
+
 == Dependencies
 
-None
+There's an optional dependency on facets/dictionary.  You'll have fewer surprises if you use a Dictionary instead of a hash for categories.
 
 == Known Issues
 
 * I don't like the quantile methods.  I found a different approach that I think is cleaner, that I should implement when I get the time.
-* This isn't really for any Enumerable.  It's only tested on Arrays, though I'm pretty sure a lot of my repositories and other custom Enumerables will work well with this.  Most importantly, a Hash will fall on its face here, so don't try it.  If you need labeled data, keep an eye out for Marginal, a gem I'm cleaning up that offers log-linear methods on cross tables.  That gem will use this gem, so whatever goodies I add here will be available there.
+* This isn't really for any Enumerable.  It's only tested on Arrays, though I'm pretty sure a lot of my repositories and other custom Enumerables will work well with this.  Most importantly, a Hash will fall on its face here, so don't try it.  If you need labeled data, keep an eye out for Marginal, a gem I'm cleaning up that offers log-linear methods on cross tables.  That gem will use this gem, so whatever goodies I add here will be available there.  Also, there is data_frame out right now that uses this gem.  That is a simpler and very useful gem for labeled data.  
 * I imagine the scope of this gem may grow by about a third more methods.  It's not supposed to be an exhaustive list.  TeguGears was developed to build these kinds of methods and have them work nicely with other tools.  So, anything more than elementary statistics should become a TeguGears class.
 * I should probably rename the range methods.
-* I'm very aggressively polluting the Enumerable namespace.  In complex work environments, it wouldn't work if other libraries had as liberal a view on things as I do.  If this is a problem, you can do something like:
-
-  require 'just_enumerable_stats/stats'
-  class MyDataContainer
-    include Enumerable
-    include JustEnumerableStats::Stats
-  
-    def initialize(*values)
-      @data = values
-    end
-  
-    def method_missing(sym, *args, &block)
-      @data.send(sym, *args, &block)
-    end
-  
-    def to_a
-      @data
-    end
-  
-  end
-
-To use this new class, you'd convert your data lists like this:
-  a = [1,2,3]
-  m = MyDataContainer.new(*a)
-  
-Or just
-  m = MyDataContainer.new(1,2,3)
-  
-This approach works and passes the same tests as the main library though it promises to be awkward.
 
 ==COPYRIGHT
 
