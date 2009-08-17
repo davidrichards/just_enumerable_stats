@@ -527,200 +527,39 @@ describe "JustEnumerableStats" do
     [1,2,3].to_f!.should eql([1.0, 2.0, 3.0])
   end
   
-  context "unobstrusive" do
-    before do
-      @a = BusyClass.new(1,2,3)
-      @b = [2,3,1]
-    end
-    
-    it "should not use the native max" do
-      lambda{@a._jes_max}.should_not raise_error
-    end
-
-    it "should not use the native max_index" do
-      lambda{@a._jes_max_index}.should_not raise_error
-    end
-    
-    it "should not use the native min" do
-      lambda{@a._jes_min}.should_not raise_error
-    end
-    
-    it "should not use the native min_index" do
-      lambda{@a._jes_min_index}.should_not raise_error
-    end
-    
-    it "should not use the native default_block" do
-      lambda{@a._jes_default_block}.should_not raise_error
-    end
-
-    it "should not use the native default_block=" do
-      lambda{@a._jes_default_block= lambda{|e| 1} }.should_not raise_error
-    end
-    
-    it "should not use the native sum" do
-      lambda{@a._jes_sum}.should_not raise_error
-    end
-    
-    it "should not use the native average" do
-      lambda{@a._jes_average}.should_not raise_error
-    end
-    
-    it "should not use the native variance" do
-      lambda{@a._jes_variance}.should_not raise_error
-    end
-    
-    it "should not use the native standard_deviation" do
-      lambda{@a._jes_standard_deviation}.should_not raise_error
-    end
-    
-    it "should not use the native median" do
-      lambda{@a._jes_median}.should_not raise_error
-    end
-    
-    it "should not use the native categories" do
-      lambda{@a._jes_categories}.should_not raise_error
-    end
-    
-    it "should not use the native is_numeric?" do
-      lambda{@a._jes_is_numeric?}.should_not raise_error
-    end
-    
-    it "should not use the native range" do
-      lambda{@a._jes_range}.should_not raise_error
-    end
-    
-    it "should not use the native set_range_class" do
-      lambda{@a._jes_set_range_class(FixedRange)}.should_not raise_error
-    end
-
-    it "should not use the native set_range" do
-      lambda{@a._jes_set_range({:a => 1})}.should_not raise_error
-    end
-    
-    it "should not use the native dichotomize" do
-      lambda{@a._jes_dichotomize(2, :small, :big)}.should_not raise_error
-    end
-
-    it "should not use the native count_if" do
-      lambda{@a._jes_count_if {|e| e == 2}}.should_not raise_error
-    end
-    
-    it "should not use the native category_values" do
-      lambda{@a._jes_category_values}.should_not raise_error
-    end
-    
-    it "should not use the native range_class" do
-      lambda{@a._jes_range_class}.should_not raise_error
-    end
-    
-    it "should not use the native range_as_range" do
-      lambda{@a._jes_range_as_range}.should_not raise_error
-    end
-    
-    it "should not use the native new_sort" do
-      lambda{@a._jes_new_sort}.should_not raise_error
-    end
-    
-    it "should not use the native rank" do
-      lambda{@a._jes_rank}.should_not raise_error
-    end
-    
-    it "should not use the native order" do
-      lambda{@a._jes_order}.should_not raise_error
-    end
-    
-    it "should not use the native quantile" do
-      lambda{@a._jes_quantile}.should_not raise_error
-    end
-    
-    it "should not use the native cum_sum" do
-      lambda{@a._jes_cum_sum}.should_not raise_error
-    end
-    
-    it "should not use the native cum_prod" do
-      lambda{@a._jes_cum_prod}.should_not raise_error
-    end
-    
-    it "should not use the native cum_max" do
-      lambda{@a._jes_cum_max}.should_not raise_error
-    end
-    
-    it "should not use the native cum_min" do
-      lambda{@a._jes_cum_min}.should_not raise_error
-    end
-    
-    it "should not use the native product" do
-      lambda{@a._jes_product}.should_not raise_error
-    end
-    
-    it "should not use the native to_pairs" do
-      lambda{@a._jes_to_pairs(@b) {|a, b| a}}.should_not raise_error
-    end
-    
-    it "should not use the native tanimoto_pairs" do
-      lambda{@a._jes_tanimoto_pairs(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native union" do
-      lambda{@a._jes_union(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native intersect" do
-      lambda{@a._jes_intersect(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native compliment" do
-      lambda{@a._jes_compliment(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native exclusive_not" do
-      lambda{@a._jes_exclusive_not(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native cartesian_product" do
-      lambda{@a._jes_cartesian_product(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native sigma_pairs" do
-      lambda{@a._jes_sigma_pairs(@b) {|a, b| a}}.should_not raise_error
-    end
-    
-    it "should not use the native euclidian_distance" do
-      lambda{@a._jes_euclidian_distance(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native rand_in_range" do
-      lambda{@a._jes_rand_in_range(1, 2)}.should_not raise_error
-    end
-    
-    it "should not use the native correlation" do
-      lambda{@a._jes_correlation(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native yield_transpose" do
-      lambda{@a._jes_yield_transpose(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native max_of_lists" do
-      lambda{@a._jes_max_of_lists(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native min_of_lists" do
-      lambda{@a._jes_min_of_lists(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native covariance" do
-      lambda{@a._jes_covariance(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native pearson_correlation" do
-      lambda{@a._jes_pearson_correlation(@b)}.should_not raise_error
-    end
-    
-    it "should not use the native to_f!" do
-      lambda{@a._jes_to_f!}.should_not raise_error
-    end
-    
+  it "should have the ability to scale the list by a number" do
+    a = [1,2,3,4]
+    a.scale!(0.5)
+    a.should eql([0.5, 1.0, 1.5, 2.0])
+  end
+  
+  it "should be able to scale a list by a calculation on the list" do
+    a = (1..10).inject([]) {|list, i| list << rand}
+    std = a.std
+    b = a.map {|e| e * std}
+    a.should_receive(:std).once.and_return(std)
+    a.scale!(a.std)
+    a.should eql(b)
+  end
+  
+  it "should be able to scale by a function" do
+    a = [-4, -2, 0, 2, 4]
+    a.scale! { |e| 1 / (1 + Math.exp( -1 * (e))) }
+    a[0].should be_close(0.01798, 1.0e-5)
+    a[1].should be_close(0.11920, 1.0e-5)
+    a[2].should eql(0.5)
+    a[3].should be_close(0.88079, 1.0e-5)
+    a[4].should be_close(0.98201, 1.0e-5)
+  end
+  
+  it "should be able to scale to a signoid" do
+    a = [-4, -2, 0, 2, 4]
+    a.scale_to_sigmoid!
+    a[0].should be_close(0.01798, 1.0e-5)
+    a[1].should be_close(0.11920, 1.0e-5)
+    a[2].should eql(0.5)
+    a[3].should be_close(0.88079, 1.0e-5)
+    a[4].should be_close(0.98201, 1.0e-5)
   end
   
 end

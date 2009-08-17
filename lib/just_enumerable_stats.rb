@@ -696,8 +696,24 @@ module Enumerable
     return true if @_jes_to_f
     @_jes_to_f = self.map! {|e| e.to_f}
   end
+  
+  # Scale a list by a number.  The implementation of this can be self-referential.
+  # Example: a.scale!(a.standard_deviation)
   safe_alias :_jes_to_f!
   
+  def _jes_scale!(val=nil, &block)
+    if block
+      self.map!{|e| block.call(e)}
+    else
+      self.map!{|e| e * val}
+    end
+  end
+  safe_alias :_jes_scale!
+  
+  def _jes_scale_to_sigmoid!
+    self._jes_scale! { |e| 1 / (1 + Math.exp( -1 * (e))) }
+  end
+  safe_alias :_jes_scale_to_sigmoid!
 end
 
 @a = [1,2,3]
