@@ -204,6 +204,10 @@ describe "JustEnumerableStats" do
       lambda{@a._jes_scale!(1)}.should_not raise_error
     end
     
+    it "should not use the native scale_to_sigmoid" do
+      lambda{@a._jes_scale_to_sigmoid}.should_not raise_error
+    end
+    
     it "should not use the native scale_to_sigmoid!" do
       lambda{@a._jes_scale_to_sigmoid!}.should_not raise_error
     end

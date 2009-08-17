@@ -552,7 +552,17 @@ describe "JustEnumerableStats" do
     a[4].should be_close(0.98201, 1.0e-5)
   end
   
-  it "should be able to scale to a signoid" do
+  it "should have a non-desctructive scale_to_sigmoid" do
+    a = [-4, -2, 0, 2, 4]
+    b = a.scale_to_sigmoid
+    b[0].should be_close(0.01798, 1.0e-5)
+    b[1].should be_close(0.11920, 1.0e-5)
+    b[2].should eql(0.5)
+    b[3].should be_close(0.88079, 1.0e-5)
+    b[4].should be_close(0.98201, 1.0e-5)
+  end
+
+  it "should be able to scale to a sigmoid" do
     a = [-4, -2, 0, 2, 4]
     a.scale_to_sigmoid!
     a[0].should be_close(0.01798, 1.0e-5)

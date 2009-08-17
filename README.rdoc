@@ -145,12 +145,23 @@ There are a few new features for scaling data:
   => [0.166666666666667, 0.333333333333333, 0.5]
   >> a
   => [0.166666666666667, 0.333333333333333, 0.5]
+  >> a = [-5,0,5]      
+  => [-5, 0, 5]
+  >> a.scale_to_sigmoid
+  => [0.00669285092428486, 0.5, 0.993307149075715]
+  >> a
+  => [-5, 0, 5]
+  >> a.scale_to_sigmoid!
+  => [0.00669285092428486, 0.5, 0.993307149075715]
+  >> a                  
+  => [0.00669285092428486, 0.5, 0.993307149075715]
 
 Basically:
 
 * scale can scale by a number or with a block.  The block is a transformation for a single element.
 * scale_between sets the minimum and maximum values, and keeps each value proportionate to each other.
 * normalize calculates the percentage of an element to the whole.
+* scale_to_sigmoid uses the sigmoid function to scale a set between 0 and 1 with a Gaussian distribution on the numbers.
 
 == Categories
 

@@ -721,6 +721,11 @@ module Enumerable
   end
   safe_alias :_jes_scale!
   
+  def _jes_scale_to_sigmoid
+    self._jes_scale { |e| 1 / (1 + Math.exp( -1 * (e))) }
+  end
+  safe_alias :_jes_scale_to_sigmoid
+
   def _jes_scale_to_sigmoid!
     self._jes_scale! { |e| 1 / (1 + Math.exp( -1 * (e))) }
   end

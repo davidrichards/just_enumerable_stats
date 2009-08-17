@@ -66,6 +66,7 @@ class BusyClass
   def pearson_correlation(other); raise ArgumentError, "Should not be called"; end
   def to_f!; raise ArgumentError, "Should not be called"; end
   def scale!; raise ArgumentError, "Should not be called"; end
+  def scale_to_sigmoid; raise ArgumentError, "Should not be called"; end
   def scale_to_sigmoid!; raise ArgumentError, "Should not be called"; end
   def normalize; raise ArgumentError, "Should not be called"; end
   def normalize!; raise ArgumentError, "Should not be called"; end
