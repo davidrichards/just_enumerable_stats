@@ -40,6 +40,7 @@ class BusyClass
   def range_as_range(&block); raise ArgumentError, "Should not be called"; end
   def new_sort(&block); raise ArgumentError, "Should not be called"; end
   def rank(&block); raise ArgumentError, "Should not be called"; end
+  def ordinalize(&block); raise ArgumentError, "Should not be called"; end
   def order(&block); raise ArgumentError, "Should not be called"; end
   def quantile(&block); raise ArgumentError, "Should not be called"; end
   def cum_sum(sorted=false, &block); raise ArgumentError, "Should not be called"; end
@@ -66,6 +67,10 @@ class BusyClass
   def to_f!; raise ArgumentError, "Should not be called"; end
   def scale!; raise ArgumentError, "Should not be called"; end
   def scale_to_sigmoid!; raise ArgumentError, "Should not be called"; end
+  def normalize; raise ArgumentError, "Should not be called"; end
+  def normalize!; raise ArgumentError, "Should not be called"; end
+  def scale_between; raise ArgumentError, "Should not be called"; end
+  def scale_between!; raise ArgumentError, "Should not be called"; end
 end
 
     

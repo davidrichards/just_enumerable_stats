@@ -100,6 +100,10 @@ describe "JustEnumerableStats" do
       lambda{@a._jes_rank}.should_not raise_error
     end
     
+    it "should not use the native ordinalize" do
+      lambda{@a._jes_ordinalize}.should_not raise_error
+    end
+    
     it "should not use the native order" do
       lambda{@a._jes_order}.should_not raise_error
     end
@@ -202,6 +206,22 @@ describe "JustEnumerableStats" do
     
     it "should not use the native scale_to_sigmoid!" do
       lambda{@a._jes_scale_to_sigmoid!}.should_not raise_error
+    end
+    
+    it "should not use the native normalize" do
+      lambda{@a._jes_normalize}.should_not raise_error
+    end
+    
+    it "should not use the native normalize!" do
+      lambda{@a._jes_normalize!}.should_not raise_error
+    end
+    
+    it "should not use the native scale_between" do
+      lambda{@a._jes_scale_between(6,8)}.should_not raise_error
+    end
+    
+    it "should not use the native scale_between!" do
+      lambda{@a._jes_scale_between!(6,8)}.should_not raise_error
     end
     
   end

@@ -561,5 +561,34 @@ describe "JustEnumerableStats" do
     a[3].should be_close(0.88079, 1.0e-5)
     a[4].should be_close(0.98201, 1.0e-5)
   end
-  
+
+  it "should be able to normalize a list" do
+    b = @a.normalize
+    b.should eql([1/6.0, 2/6.0, 3/6.0])
+    @a.normalize!
+    @a.should eql(b)
+  end
+
+  context "scale_between" do
+    before do
+      @a = [-4, -2, 0, 2, 4]
+    end
+    
+    it "should require two parameters" do
+      lambda{@a.scale_between(1)}.should raise_error(ArgumentError, 'Must provide two values')
+      lambda{@a.scale_between(1,2)}.should_not raise_error
+      lambda{@a.scale_between(1,2,3)}.should raise_error(ArgumentError, 'Must provide two values')
+    end
+    
+    it "should return a new array between the scaled values" do
+      b = @a.scale_between(1,2)
+      b.should eql([1.0, 1.25, 1.5, 1.75, 2.0])
+    end
+    
+    it "should be able to transform into a scaled set" do
+      b = @a.scale_between(1,2)
+      @a.scale_between!(1,2)
+      @a.should eql(b)
+    end
+  end
 end

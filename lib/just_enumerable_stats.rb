@@ -400,6 +400,8 @@ module Enumerable
 
   end
   safe_alias :_jes_rank
+  safe_alias :_jes_ordinalize, :_jes_rank
+  safe_alias :ordinalize, :_jes_rank
 
   # Given values like [10,5,5,1]
   # Rank should produce something like [4,2,2,1]
@@ -700,6 +702,15 @@ module Enumerable
   # Scale a list by a number.  The implementation of this can be self-referential.
   # Example: a.scale!(a.standard_deviation)
   safe_alias :_jes_to_f!
+
+  def _jes_scale(val=nil, &block)
+    if block
+      self.map{|e| block.call(e)}
+    else
+      self.map{|e| e * val}
+    end
+  end
+  safe_alias :_jes_scale
   
   def _jes_scale!(val=nil, &block)
     if block
@@ -714,6 +725,42 @@ module Enumerable
     self._jes_scale! { |e| 1 / (1 + Math.exp( -1 * (e))) }
   end
   safe_alias :_jes_scale_to_sigmoid!
+
+  def _jes_normalize
+    self.map {|e| e.to_f / self._jes_sum }
+  end
+  safe_alias :_jes_normalize
+  
+  def _jes_normalize!
+    sum = self._jes_sum
+    self.map! {|e| e.to_f / sum }
+  end
+  safe_alias :_jes_normalize!
+  
+  def _jes_scale_between(*values)
+    raise ArgumentError, "Must provide two values" unless values.size == 2
+    values.sort!
+    min = values[0]
+    max = values[1]
+    orig_min = self._jes_min
+    scalar = (max - min) / (self._jes_max - orig_min).to_f
+    shift = min - (orig_min * scalar)
+    self._jes_scale{|e| (e * scalar) + shift}
+  end
+  safe_alias :_jes_scale_between
+
+  def _jes_scale_between!(*values)
+    raise ArgumentError, "Must provide two values" unless values.size == 2
+    values.sort!
+    min = values[0]
+    max = values[1]
+    orig_min = self._jes_min
+    scalar = (max - min) / (self._jes_max - orig_min).to_f
+    shift = min - (orig_min * scalar)
+    self._jes_scale!{|e| (e * scalar) + shift}
+  end
+  safe_alias :_jes_scale_between!
+
 end
 
 @a = [1,2,3]
