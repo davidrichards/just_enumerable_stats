@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'mathn'
 
 # Need the FixedRange
 $:.unshift File.dirname(__FILE__)
@@ -765,7 +766,16 @@ module Enumerable
     self._jes_scale!{|e| (e * scalar) + shift}
   end
   safe_alias :_jes_scale_between!
+  
+  # Returns a hash or dictionary (if installed) of the frequency of each category.
+  def frequency
+    dict = defined?(Dictionary) ? Dictionary.new : Hash.new
+    self.category_values.each do |k, v|
+      dict[k] = v.size / self.size
+    end
+    dict
+  end
 
 end
 
-@a = [1,2,3]
+# @a = [1,2,3]

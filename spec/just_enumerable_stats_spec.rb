@@ -162,19 +162,19 @@ describe "JustEnumerableStats" do
   end
   
   it "should be able to calculate the standard deviation" do
-    @a.standard_deviation.should eql(1.0)
-    @a.std.should eql(1.0)
+    @a.standard_deviation.should eql(1)
+    @a.std.should eql(1)
   end
   
   it "should be able to calculate the standard deviation with a block" do
-    @a.standard_deviation(&@doubler).should eql(2.0)
-    @a.std(&@doubler).should eql(2.0)
+    @a.standard_deviation(&@doubler).should eql(2)
+    @a.std(&@doubler).should eql(2)
   end
   
   it "should be able to calculate the standard deviation with a default block" do
     @a.default_block = @doubler
-    @a.standard_deviation.should eql(2.0)
-    @a.std.should eql(2.0)
+    @a.standard_deviation.should eql(2)
+    @a.std.should eql(2)
   end
   
   it "should be able to calculate the median value" do
