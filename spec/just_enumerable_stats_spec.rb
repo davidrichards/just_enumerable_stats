@@ -605,4 +605,17 @@ describe "JustEnumerableStats" do
       @a.should eql(b)
     end
   end
+  
+  context "frequency" do
+    it "should be able to generate a frequency" do
+      @a.frequency[1].should eql(1/3)
+      @a.frequency[2].should eql(1/3)
+      @a.frequency[3].should eql(1/3)
+    end
+    
+    it "should be able to generate a frequency for a specific value" do
+      a = [3,3,3,2]
+      a.frequency_for(3).should eql(3/4)
+    end
+  end
 end

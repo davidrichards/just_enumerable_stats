@@ -72,6 +72,8 @@ class BusyClass
   def normalize!; raise ArgumentError, "Should not be called"; end
   def scale_between; raise ArgumentError, "Should not be called"; end
   def scale_between!; raise ArgumentError, "Should not be called"; end
+  def frequency; raise ArgumentError, "Should not be called"; end
+  def frequency_for(val); raise ArgumentError, "Should not be called"; end
 end
 
     

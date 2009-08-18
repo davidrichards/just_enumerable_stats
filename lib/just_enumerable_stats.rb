@@ -768,13 +768,19 @@ module Enumerable
   safe_alias :_jes_scale_between!
   
   # Returns a hash or dictionary (if installed) of the frequency of each category.
-  def frequency
+  def _jes_frequency
     dict = defined?(Dictionary) ? Dictionary.new : Hash.new
-    self.category_values.each do |k, v|
+    self._jes_category_values.each do |k, v|
       dict[k] = v.size / self.size
     end
     dict
   end
+  safe_alias :_jes_frequency
+  
+  def _jes_frequency_for(key)
+    self._jes_frequency[key]
+  end
+  safe_alias :_jes_frequency_for
 
 end
 

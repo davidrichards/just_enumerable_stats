@@ -227,6 +227,14 @@ describe "JustEnumerableStats" do
     it "should not use the native scale_between!" do
       lambda{@a._jes_scale_between!(6,8)}.should_not raise_error
     end
+
+    it "should not use the native frequency" do
+      lambda{@a._jes_frequency}.should_not raise_error
+    end
+    
+    it "should not use the native frequency_for" do
+      lambda{@a._jes_frequency_for(2)}.should_not raise_error
+    end
     
   end
   
