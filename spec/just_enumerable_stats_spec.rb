@@ -316,6 +316,10 @@ describe "JustEnumerableStats" do
     @b.rank.should eql([1,2,3])
   end
   
+  it "should have ordinalize work like ranke" do
+    @b.ordinalize.should eql([3,2,1])
+  end
+  
   it "should be able to get the order of values, handling duplicates" do
     [10,5,5,1].order.should eql([4,2,3,1])
   end
