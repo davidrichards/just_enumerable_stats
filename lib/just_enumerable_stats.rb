@@ -294,9 +294,49 @@ module Enumerable
       @_jes_categories = hash.keys
       @_jes_range_hash = hash
     end
+    @_jes_category_values = nil
     @_jes_categories
   end
   safe_alias :_jes_set_range
+  safe_alias :_jes_set_categories, :_jes_set_range
+  safe_alias :set_categories, :_jes_set_range
+  
+  # Allows you to add one category at a time.  You can actually add more
+  # than one category at a time, but it won't disrupt any previously-set
+  # categories. 
+  def _jes_add_category(hash)
+    _jes_init_range_hash
+    hash.each do |k, v|
+      @_jes_range_hash[k] = v
+    end
+    @_jes_category_values = nil
+    hash
+  end
+  safe_alias :_jes_add_category
+  
+  def method_missing(sym, *args, &block)
+    if self.categories.include?(sym)
+      self._jes_render_category(sym)
+    else
+      super
+    end
+  end
+
+  # Returns a specific category's values
+  def _jes_render_category(category)
+    self.category_values[category]
+  end
+  
+  def _jes_init_range_hash
+    if defined?(Dictionary)
+      @_jes_range_hash ||= Dictionary.new
+      @_jes_categories ||= []
+    else
+      @_jes_range_hash ||= {}
+      @_jes_categories ||= []
+    end
+  end
+  protected :_jes_init_range_hash
   
   # The hash of lambdas that are used to categorize the enumerable.
   attr_reader :_jes_range_hash

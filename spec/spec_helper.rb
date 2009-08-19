@@ -7,6 +7,13 @@ Spec::Runner.configure do |config|
   
 end
 
+
+# This is one monster class that happens to have everything that we want
+# to define with this gem.  Since all the definitions raise an error,
+# all we have to do is call the _jes_ version of each method and make
+# sure that no error is raised.  This helps us make sure there are no
+# dependencies from within the method that use a non-jes version of a
+# method. 
 class BusyClass
   include Enumerable
   def initialize(*vals)
@@ -33,6 +40,8 @@ class BusyClass
   def range(&block); raise ArgumentError, "Should not be called"; end
   def set_range_class(klass, *args); raise ArgumentError, "Should not be called"; end
   def set_range(hash); raise ArgumentError, "Should not be called"; end
+  def set_categories(hash); raise ArgumentError, "Should not be called"; end
+  def add_category(hash); raise ArgumentError, "Should not be called"; end
   def dichotomize(split_value, first_label, second_label); raise ArgumentError, "Should not be called"; end
   def count_if(&block); raise ArgumentError, "Should not be called"; end
   def category_values(reset=false); raise ArgumentError, "Should not be called"; end

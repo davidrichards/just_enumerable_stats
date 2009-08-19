@@ -240,6 +240,26 @@ describe "JustEnumerableStats" do
     })
     @a.categories.sort.should eql(["<= 2", "> 2"].sort)
   end
+
+  it "should be able to set a category as an alias to set_range" do
+    @a.set_categories({
+      "<= 2" => lambda{ |e| e <= 2 },
+      "> 2" => lambda{ |e| e > 2 }
+    })
+    @a.categories.sort.should eql(["<= 2", "> 2"].sort)
+  end
+  
+  it "should be able to add a category" do
+    @a.set_categories({
+      "<= 2" => lambda{ |e| e <= 2 },
+      "== 2" => lambda{ |e| e == 2 }
+    })
+    @a.category_values["<= 2"].should eql([1,2])
+    @a.category_values["== 2"].should eql([2])
+    @a.add_category({">= 2" => lambda{ |e| e >= 2}})
+    @a.categories.sort.should eql([">= 2", "<= 2", "== 2"].sort)
+    @a.category_values[">= 2"].should eql([2,3])
+  end
   
   it "should be able to get a hash of category values" do
     @a.set_range({
@@ -248,6 +268,14 @@ describe "JustEnumerableStats" do
     })
     @a.category_values["<= 2"].should eql([1,2])
     @a.category_values["> 2"].should eql([3])
+  end
+  
+  it "should be able to get categories with dot notation" do
+    @a.set_range({
+      :small => lambda{ |e| e <= 2 },
+      :large => lambda{ |e| e > 2 }
+    })
+    @a.small.should eql([1,2])
   end
   
   it "should be able to get category values with a regular range" do

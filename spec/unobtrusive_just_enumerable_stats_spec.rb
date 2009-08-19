@@ -72,6 +72,14 @@ describe "JustEnumerableStats" do
       lambda{@a._jes_set_range({:a => 1})}.should_not raise_error
     end
     
+    it "should not use the native set_categories" do
+      lambda{@a._jes_set_categories({:a => 1})}.should_not raise_error
+    end
+    
+    it "should not use the native add_category" do
+      lambda{@a._jes_add_category({:a => 1})}.should_not raise_error
+    end
+    
     it "should not use the native dichotomize" do
       lambda{@a._jes_dichotomize(2, :small, :big)}.should_not raise_error
     end
