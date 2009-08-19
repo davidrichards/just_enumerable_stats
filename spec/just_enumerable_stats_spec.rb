@@ -250,6 +250,12 @@ describe "JustEnumerableStats" do
   end
   
   it "should be able to add a category" do
+    @a.add_category({">= 2" => lambda{ |e| e >= 2}})
+    @a.categories.sort.should eql([">= 2"].sort)
+    @a.category_values[">= 2"].should eql([2,3])
+  end
+  
+  it "should be able to add a category with categories already set" do
     @a.set_categories({
       "<= 2" => lambda{ |e| e <= 2 },
       "== 2" => lambda{ |e| e == 2 }

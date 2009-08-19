@@ -289,9 +289,9 @@ module Enumerable
     if defined?(Dictionary)
       @_jes_range_hash = Dictionary.new
       @_jes_range_hash.merge!(hash)
-      @_jes_categories = @_jes_range_hash.keys
+      @_jes_categories = @_jes_range_hash.keys.dup
     else
-      @_jes_categories = hash.keys
+      @_jes_categories = hash.keys.dup
       @_jes_range_hash = hash
     end
     @_jes_category_values = nil
@@ -308,6 +308,7 @@ module Enumerable
     _jes_init_range_hash
     hash.each do |k, v|
       @_jes_range_hash[k] = v
+      @_jes_categories << k
     end
     @_jes_category_values = nil
     hash
