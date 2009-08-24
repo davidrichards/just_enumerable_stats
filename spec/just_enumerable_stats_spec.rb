@@ -278,9 +278,11 @@ describe "JustEnumerableStats" do
   
   it "should be able to return the first category a value belongs to" do
     @a.first_category(2).should eql(2)
+    @a.category(2).should eql(2)
     @a.add_category(:small) {|e| e <= 2}
     @a.add_category(:large) {|e| e >= 2}
     @a.first_category(2).should eql(:small)
+    @a.category(2).should eql(:small)
   end
   
   it "should be able to return all categories a value belongs to" do

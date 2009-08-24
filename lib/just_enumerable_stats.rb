@@ -411,6 +411,7 @@ module Enumerable
     return nil
   end
   safe_alias :_jes_first_category
+  safe_alias :category, :_jes_first_category
   
   def _jes_all_categories(value)
     return [value] unless self.range_hash
