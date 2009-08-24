@@ -92,6 +92,18 @@ describe "JustEnumerableStats" do
       lambda{@a._jes_category_values}.should_not raise_error
     end
     
+    it "should not use the native first_category" do
+      lambda{@a._jes_first_category(1)}.should_not raise_error
+    end
+    
+    it "should not use the native all_categories" do
+      lambda{@a._jes_all_categories(1)}.should_not raise_error
+    end
+    
+    it "should not use the native category_map" do
+      lambda{@a._jes_category_map}.should_not raise_error
+    end
+    
     it "should not use the native range_class" do
       lambda{@a._jes_range_class}.should_not raise_error
     end

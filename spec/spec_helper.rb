@@ -45,6 +45,9 @@ class BusyClass
   def dichotomize(split_value, first_label, second_label); raise ArgumentError, "Should not be called"; end
   def count_if(&block); raise ArgumentError, "Should not be called"; end
   def category_values(reset=false); raise ArgumentError, "Should not be called"; end
+  def first_category(value); raise ArgumentError, "Should not be called"; end
+  def all_categories(value); raise ArgumentError, "Should not be called"; end
+  def category_map(reset=false); raise ArgumentError, "Should not be called"; end
   def range_class; raise ArgumentError, "Should not be called"; end
   def range_as_range(&block); raise ArgumentError, "Should not be called"; end
   def new_sort(&block); raise ArgumentError, "Should not be called"; end

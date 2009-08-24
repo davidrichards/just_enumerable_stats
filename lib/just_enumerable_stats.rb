@@ -304,14 +304,19 @@ module Enumerable
   # Allows you to add one category at a time.  You can actually add more
   # than one category at a time, but it won't disrupt any previously-set
   # categories. 
-  def _jes_add_category(hash)
+  def _jes_add_category(hash, &block)
     _jes_init_range_hash
-    hash.each do |k, v|
-      @_jes_range_hash[k] = v
-      @_jes_categories << k
+    if hash.is_a?(Hash)
+      hash.each do |k, v|
+        @_jes_range_hash[k] = v
+        @_jes_categories << k
+      end
+      @_jes_category_values = nil
+      hash
+    # Allows the syntax a.add_category(:two_or_three) {|e| e == 2 or e == 3}
+    elsif block
+      _jes_add_category(hash => block)
     end
-    @_jes_category_values = nil
-    hash
   end
   safe_alias :_jes_add_category
   
@@ -391,6 +396,41 @@ module Enumerable
     end
   end
   safe_alias :_jes_category_values
+
+  # Returns the first category of a value.  Example:
+  # a = [1,2,3]
+  # a.first_category(2) # => 2
+  # a.add_category(:small) {|e| e <= 1}
+  # a.add_category(:large) {|e| e > 1}
+  # a.first_category(2) # => :large
+  def _jes_first_category(value)
+    return value unless self.range_hash
+    self._jes_range_hash.each do |cat, block|
+      return cat if block.call(value)
+    end
+    return nil
+  end
+  safe_alias :_jes_first_category
+  
+  def _jes_all_categories(value)
+    return [value] unless self.range_hash
+    self._jes_range_hash.inject([]) do |list, e|
+      cat = e.first
+      block = e.last
+      list << cat if block.call(value)
+      list
+    end
+  end
+  safe_alias :_jes_all_categories
+  
+  def _jes_category_map(reset=false)
+    @_jes_category_map = nil if reset
+    return @_jes_category_map if @_jes_category_map
+    @_jes_category_map = self.inject([]) do |list, e|
+      list << self._jes_first_category(e)
+    end
+  end
+  safe_alias :_jes_category_map
 
   # When creating a range, what class will it be?  Defaults to Range, but
   # other classes are sometimes useful. 

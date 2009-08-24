@@ -276,6 +276,27 @@ describe "JustEnumerableStats" do
     @a.category_values["> 2"].should eql([3])
   end
   
+  it "should be able to return the first category a value belongs to" do
+    @a.first_category(2).should eql(2)
+    @a.add_category(:small) {|e| e <= 2}
+    @a.add_category(:large) {|e| e >= 2}
+    @a.first_category(2).should eql(:small)
+  end
+  
+  it "should be able to return all categories a value belongs to" do
+    @a.all_categories(2).should eql([2])
+    @a.add_category(:small) {|e| e <= 2}
+    @a.add_category(:large) {|e| e >= 2}
+    @a.all_categories(2).should eql([:small, :large])
+  end
+  
+  it "should be able to return a map of each item's category" do
+    @a.category_map.should eql([1,2,3])
+    @a.add_category(:small) {|e| e <= 1}
+    @a.add_category(:large) {|e| e > 1}
+    @a.category_map(true).should eql([:small, :large, :large])
+  end
+  
   it "should be able to get categories with dot notation" do
     @a.set_range({
       :small => lambda{ |e| e <= 2 },
