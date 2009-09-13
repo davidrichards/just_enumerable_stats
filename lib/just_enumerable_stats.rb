@@ -255,6 +255,7 @@ module Enumerable
     if @_jes_categories
       @_jes_categories
     elsif self._jes_is_numeric?
+      @_jes_range_class = FixedRange if self.all? {|e| e.is_a?(Float)}
       self._jes_range_instance.map
     else
       self.uniq.sort rescue self.uniq
