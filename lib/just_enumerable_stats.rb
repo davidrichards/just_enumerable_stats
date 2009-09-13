@@ -254,9 +254,12 @@ module Enumerable
   def _jes_categories
     if @_jes_categories
       @_jes_categories
+    elsif self.any? {|e| e.is_a?(Float)}
+      val = self.map {|e| e}
+      val.uniq.sort rescue val
     elsif self._jes_is_numeric?
-      @_jes_range_class = FixedRange if self.all? {|e| e.is_a?(Float)}
-      self._jes_range_instance.map
+      val = self._jes_range_instance.map {|e| e}
+      val.uniq.sort rescue val
     else
       self.uniq.sort rescue self.uniq
     end
