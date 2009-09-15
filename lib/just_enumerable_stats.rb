@@ -819,13 +819,16 @@ module Enumerable
   safe_alias :_jes_scale_to_sigmoid!
 
   def _jes_normalize
-    self.map {|e| e.to_f / self._jes_sum }
+    min = self._jes_min
+    diff = self._jes_max - min
+    self.map {|e| (e - min) / diff }
   end
   safe_alias :_jes_normalize
   
   def _jes_normalize!
-    sum = self._jes_sum
-    self.map! {|e| e.to_f / sum }
+    min = self._jes_min
+    diff = self._jes_max - min
+    self.map! {|e| (e - min) / diff }
   end
   safe_alias :_jes_normalize!
   

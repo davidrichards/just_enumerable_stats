@@ -635,9 +635,14 @@ describe "JustEnumerableStats" do
 
   it "should be able to normalize a list" do
     b = @a.normalize
-    b.should eql([1/6.0, 2/6.0, 3/6.0])
+    b.should eql([0, 1/2, 1])
     @a.normalize!
     @a.should eql(b)
+  end
+  
+  it "should normalize a list with repeating values" do
+    a = [1,2,3,2,1]
+    a.normalize.should eql([0, 1/2, 1, 1/2, 0])
   end
 
   context "scale_between" do
