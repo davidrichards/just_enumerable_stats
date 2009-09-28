@@ -279,7 +279,14 @@ describe "JustEnumerableStats" do
     @a.category_values["<= 2"].should eql([1,2])
     @a.category_values["> 2"].should eql([3])
   end
-  
+
+  # TODO: Come back to this...shortcut for setting up categories or ranges on a list.
+  # it "should be able to categorize by a rule" do
+  #   @a.set_categories_with_divisor(:labels => [:little, :big], :start => 0, :divisor => 2)
+  #   @a.categories.should eql([:little, :big])
+  #   @a.category_map.should eql([:little, :big, :big])
+  # end
+
   it "should be able to return the first category a value belongs to" do
     @a.first_category(2).should eql(2)
     @a.category(2).should eql(2)

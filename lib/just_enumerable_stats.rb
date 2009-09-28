@@ -306,6 +306,63 @@ module Enumerable
   safe_alias :_jes_set_categories, :_jes_set_range
   safe_alias :set_categories, :_jes_set_range
   
+  # def _jes_set_categories_with_divisor(opts={})
+  #   start = opts.fetch(:start, self.min)
+  #   divisor = opts.fetch(:divisor, 1)
+  #   labels = opts[:labels]
+  #   limits = _jes_top_limit_by_divisor(start, divisor)
+  #   labels ||= _jes_labels_from_limits(limits)
+  #   ranges = _jes_ranges_from_limits(limits, labels)
+  #   self.set_categories(ranges)
+  # end
+  # alias :x :_jes_set_categories_with_divisor
+  # 
+  # def _jes_top_limit_by_divisor(start, divisor)
+  #   cbd = []
+  #   (start..self.max).step(divisor){|e| cbd << e}
+  #   cbd << self.max unless cbd.include?(self.max)
+  #   cbd
+  # end
+  # protected :_jes_top_limit_by_divisor
+  # 
+  # def _jes_labels_from_limits(limits=nil)
+  #   last = nil
+  #   labels = limits.inject([]) do |list, limit|
+  #     if last.nil?
+  #       list << "<= #{limit}"
+  #     else
+  #       list << "> #{last} and <= #{limit}"
+  #     end
+  #     last = limit
+  #     list
+  #   end
+  #   labels << "> #{last}"
+  #   labels
+  # end
+  # protected :_jes_labels_from_limits
+  # 
+  # def _jes_ranges_from_limits(limits, labels)
+  #   i = 0
+  #   last = nil
+  #   dictionary = defined?(Dictionary) ? Dictionary.new : Hash.new
+  #   
+  #   ranges = limits.inject(dictionary) do |dict, limit|
+  #     if last.nil?
+  #       range = lambda{|e| e <= limit }
+  #     else
+  #       range = lambda{|e| e > last and e <= limit}
+  #     end
+  # 
+  #     last = limit
+  #     dict[labels[i]] = range
+  #     i += 1
+  #     dict
+  #   end
+  #   
+  #   ranges[labels.last] = lambda{|e| e > limits.last} unless ranges.include?(labels.last)
+  #   ranges
+  # end
+  
   # Allows you to add one category at a time.  You can actually add more
   # than one category at a time, but it won't disrupt any previously-set
   # categories. 
