@@ -249,6 +249,10 @@ describe "JustEnumerableStats" do
     @a.categories.sort.should eql(["<= 2", "> 2"].sort)
   end
   
+  it "should return false when trying to set the categories with a nil" do
+    @a.set_categories(nil).should be_false
+  end
+  
   it "should be able to add a category" do
     @a.add_category({">= 2" => lambda{ |e| e >= 2}})
     @a.categories.sort.should eql([">= 2"].sort)

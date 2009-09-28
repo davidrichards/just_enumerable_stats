@@ -290,6 +290,7 @@ module Enumerable
   # If Facets happens to be loaded on the computer, this keeps the order
   # of the categories straight. 
   def _jes_set_range(hash)
+    return false unless hash and (hash.is_a?(Hash) or hash.is_a?(Dictionary))
     if defined?(Dictionary)
       @_jes_range_hash = Dictionary.new
       @_jes_range_hash.merge!(hash)
